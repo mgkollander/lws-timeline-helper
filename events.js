@@ -17,7 +17,8 @@
       orange: '#f59e0b',
       green: '#22c55e',
       red: '#ef4444',
-      white: '#ffffff'
+      white: '#ffffff',
+      purple: '#af69ed'
     };
 
     // TODO: sloppy
@@ -156,10 +157,10 @@
         { id: 'double-dip-hero-tickets', title: 'DOUBLE DIP - Use Hero Recruitment Tickets', done: false },
         { id: 'double-dip-hero-exp', title: 'DOUBLE DIP - Use Hero EXP', done: false },
       ] },
-      { id: 'vs-total-mobilization', title: 'Alliance Versus: Total Mobilization', color: COLORS.white, start: fri.plus({ hours: 2 }), end: sat.plus({ hours: 2 }), tasks: [
+      { id: 'vs-total-mobilization', title: 'Alliance Versus: Total Mobilization', color: COLORS.purple, start: fri.plus({ hours: 2 }), end: sat.plus({ hours: 2 }), tasks: [
         { id: 'radar-tasks', title: 'Do Radar Tasks', done: false },
       ] },
-      { id: 'ar-tech-thu-2', title: 'Arms Race: Tech Research', color: COLORS.white, start: fri.plus({ hours: 2 }), end: fri.plus({ hours: 6 }), tasks: [
+      { id: 'ar-tech-thu-2', title: 'Arms Race: Tech Research', color: COLORS.purple, start: fri.plus({ hours: 2 }), end: fri.plus({ hours: 6 }), tasks: [
         { id: 'double-dip-inc-tech', title: 'DOUBLE DIP - Increase Tech Power', done: false },
         { id: 'double-dip-research', title: 'DOUBLE DIP - Use Research/Generic Speed-ups', done: false },
       ] },
@@ -167,7 +168,7 @@
         { id: 'drone-data', title: 'Drone Data', done: false },
         { id: 'stamina', title: 'Stamina', done: false },
       ] },
-      { id: 'ar-unit-fri-1', title: 'Arms Race: Unit Progression', color: COLORS.white, start: fri.plus({ hours: 10 }), end: fri.plus({ hours: 14 }), tasks: [
+      { id: 'ar-unit-fri-1', title: 'Arms Race: Unit Progression', color: COLORS.purple, start: fri.plus({ hours: 10 }), end: fri.plus({ hours: 14 }), tasks: [
         { id: 'double-dip-train-units', title: 'DOUBLE DIP - Train Units', done: false },
         { id: 'double-dip-training-generic', title: 'DOUBLE DIP - Use Training/Generic Speed-ups', done: false },
       ] },
@@ -175,11 +176,11 @@
         { id: 'hero-tickets', title: 'Use Hero Recruitment Tickets', done: false },
         { id: 'use-hero-exp', title: 'Use Hero EXP', done: false },
       ] },
-      { id: 'ar-base-fri-1', title: 'Arms Race: Base Building', color: COLORS.white, start: fri.plus({ hours: 18 }), end: fri.plus({ hours: 22 }), tasks: [
+      { id: 'ar-base-fri-1', title: 'Arms Race: Base Building', color: COLORS.purple, start: fri.plus({ hours: 18 }), end: fri.plus({ hours: 22 }), tasks: [
         { id: 'double-dip-inc-build', title: 'DOUBLE DIP - Increase Building Power', done: false },
         { id: 'double-dip-construction', title: 'DOUBLE DIP - Use Construction/Generic Speed-ups', done: false },
       ] },
-      { id: 'ar-unit-fri-2', title: 'Arms Race: Unit Progression', color: COLORS.white, start: fri.plus({ hours: 22 }), end: sat.plus({ hours: 2 }), tasks: [
+      { id: 'ar-unit-fri-2', title: 'Arms Race: Unit Progression', color: COLORS.purple, start: fri.plus({ hours: 22 }), end: sat.plus({ hours: 2 }), tasks: [
         { id: 'double-dip-train-units', title: 'DOUBLE DIP - Train Units', done: false },
         { id: 'double-dip-training-generic', title: 'DOUBLE DIP - Use Training/Generic Speed-ups', done: false },
       ] },
