@@ -15,6 +15,7 @@
 		<header>
 			<div class="controls">
 				<div class="controls-row">
+					<a href="help.html" id="help-link" class="help-button" aria-label="How To Use">How To Use</a>
 					<select id="tz-select" aria-label="Timezone"></select>
 					<button id="tz-sync" aria-label="Sync to Local">Sync to Local Time</button>
 					<div class="zoom-controls">
@@ -49,8 +50,57 @@
 			</div>
 		</div>
 
+		<div class="divider-strip"></div>
+
+		<div class="customize-section">
+			<h2>Custom Events (saved locally)</h2>
+			<form id="add-event-form" class="add-event-form" autocomplete="off">
+				<div class="form-row">
+					<label>
+						<span>Title</span>
+						<input id="ev-title" type="text" required placeholder="e.g., Marshal's Guard" />
+					</label>
+					<label>
+						<span>Day</span>
+						<select id="ev-day">
+							<option value="0">Mon</option>
+							<option value="1">Tue</option>
+							<option value="2">Wed</option>
+							<option value="3">Thu</option>
+							<option value="4">Fri</option>
+							<option value="5">Sat</option>
+							<option value="6">Sun</option>
+						</select>
+					</label>
+					<label>
+						<span>Start</span>
+						<input id="ev-start" type="time" required />
+					</label>
+					<label>
+						<span>End</span>
+						<input id="ev-end" type="time" required />
+					</label>
+					<label>
+						<span>Color</span>
+						<input id="ev-color" type="color" value="#3b82f6" />
+					</label>
+				</div>
+				<div class="form-row">
+					<label class="full">
+						<span>Tasks (comma-separated)</span>
+						<input id="ev-tasks" type="text" placeholder="e.g., Prep units, Kick ass" />
+					</label>
+				</div>
+				<div class="form-row">
+					<button type="submit">Add Custom Event</button>
+					<button type="button" id="clear-custom-events" class="secondary">Clear All</button>
+				</div>
+			</form>
+			<div id="custom-events-list" class="custom-events-list" aria-live="polite"></div>
+		</div>
+
 		<footer class="footer">
-			<span>Created with love ♡ by tumorousMass • Last updated <span id="last-updated">—</span></span>
+			<span>Created with love ♡ by tumorousMass • Last updated <span id="last-updated">Jan 9, 2026</span></span>
 		</footer>
 
 		<script src="script.js"></script>
