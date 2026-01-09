@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Last War: Survival - Timeline Helper</title>
+		<link rel="stylesheet" href="style.css" />
+		<script src="https://cdn.jsdelivr.net/npm/luxon@3.4.4/build/global/luxon.min.js"></script>
+		<script src="events.js"></script>
+	</head>
+    <body class="is-loading">
+		<div id="loader" class="loader-overlay" aria-live="polite" aria-label="Loading">
+			<div class="spinner" role="status"></div>
+		</div>
+		<header>
+			<div class="controls">
+				<div class="controls-row">
+					<select id="tz-select" aria-label="Timezone"></select>
+					<button id="tz-sync" aria-label="Sync to Local">Sync to Local Time</button>
+					<div class="zoom-controls">
+						<span>Zoom:</span>
+						<button id="zoom-out" aria-label="Zoom Out">−</button>
+						<button id="zoom-in" aria-label="Zoom In">+</button>
+					</div>
+					<label class="follow-now"><input type="checkbox" id="follow-now" /> Auto-Scroll</label>
+				</div>
+			</div>
+			<div id="current-info" class="current-info" aria-live="polite"></div>
+		</header>
+		<div class="container">
+			<div class="scroll">
+				<div class="timeline-h">
+					<div id="time-axis" class="time-axis"></div>
+					<div id="rows" class="rows"></div>
+				</div>
+			</div>
+		</div>
+
+		<div class="divider-strip"></div>
+
+		<div class="tasks-section">
+			<div class="tasks-column">
+				<h2>What Do I Need To Do Right Now?</h2>
+				<div id="now-tasks" class="tasks-list"></div>
+			</div>
+			<div class="tasks-column">
+				<h2>Upcoming Tasks</h2>
+				<div id="upcoming-tasks" class="tasks-list"></div>
+			</div>
+		</div>
+
+		<footer class="footer">
+			<span>Created with love ♡ by tumorousMass • Last updated <span id="last-updated">—</span></span>
+		</footer>
+
+		<script src="script.js"></script>
+	</body>
+</html>
