@@ -129,6 +129,21 @@ header h1 {
   color: var(--muted);
 }
 
+.help-button {
+  display: inline-block;
+  background: var(--accent);
+  color: #1d2021;
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+}
+.help-button:hover {
+  filter: brightness(1.1);
+}
+
 select, button {
   background: var(--panel);
   color: var(--text);
@@ -337,6 +352,7 @@ button {
   .controls-row #tz-sync { order: 2; }
   .controls-row .zoom-controls { order: 3; margin-left: 8px; }
   .controls-row .follow-now { order: 4; flex: 1 0 100%; margin-left: 0; }
+  .controls-row .help-button { order: 0; flex: 1 0 100%; }
 }
 
 .tasks-section {
@@ -422,3 +438,79 @@ button {
   color: var(--muted);
   font-size: 12px;
 }
+
+.customize-section {
+  padding: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.add-event-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.add-event-form .form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.add-event-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.add-event-form label.full { flex: 1 1 100%; }
+
+.add-event-form input[type="text"],
+.add-event-form input[type="time"],
+.add-event-form select,
+.add-event-form input[type="color"] {
+  background: var(--panel);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 10px;
+}
+
+.add-event-form button.secondary {
+  background: transparent;
+}
+
+.add-event-form button.danger {
+  border-color: #7f1d1d;
+  color: #fecaca;
+}
+
+.custom-events-list {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.custom-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--panel);
+}
+
+.custom-row .color-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+}
+
+.custom-title { flex: 1 1 auto; }
+
+.custom-empty { color: var(--muted); font-size: 13px; }

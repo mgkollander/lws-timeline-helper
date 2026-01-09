@@ -13,7 +13,16 @@
     zoomOut: document.getElementById('zoom-out'),
     nowTasks: document.getElementById('now-tasks'),
     upcomingTasks: document.getElementById('upcoming-tasks'),
-    followNow: document.getElementById('follow-now')
+    followNow: document.getElementById('follow-now'),
+    addEventForm: document.getElementById('add-event-form'),
+    evTitle: document.getElementById('ev-title'),
+    evDay: document.getElementById('ev-day'),
+    evStart: document.getElementById('ev-start'),
+    evEnd: document.getElementById('ev-end'),
+    evColor: document.getElementById('ev-color'),
+    evTasks: document.getElementById('ev-tasks'),
+    clearCustomBtn: document.getElementById('clear-custom-events'),
+    customEventsList: document.getElementById('custom-events-list')
   };
 
   let state = {
@@ -25,7 +34,8 @@
     selectedDayIndex: 0,
     originalHourWidthPx: null,
     scale: 2.0,
-    followNow: false
+    followNow: false,
+    customEvents: []
   };
 
   function getWeekKey() {
@@ -41,6 +51,44 @@
     } catch {
       state.statusMap = {};
     }
+  }
+
+  function getCustomEventsKey() {
+    return `customEvents:${getWeekKey()}`;
+  }
+
+  function loadCustomEvents() {
+    const key = getCustomEventsKey();
+    try {
+      const raw = localStorage.getItem(key);
+      const items = raw ? JSON.parse(raw) : [];
+      // convert stored UTC ISO strings back to DateTime in current zone
+      state.customEvents = items.map(e => ({
+        id: e.id,
+        title: e.title,
+        color: e.color,
+        start: DateTime.fromISO(e.start, { zone: 'UTC' }).setZone(state.zone),
+        end: DateTime.fromISO(e.end, { zone: 'UTC' }).setZone(state.zone),
+        tasks: (e.tasks || []).map(t => ({ id: t.id, title: t.title, done: !!t.done }))
+      }));
+    } catch {
+      state.customEvents = [];
+    }
+  }
+
+  function saveCustomEvents() {
+    const key = getCustomEventsKey();
+    try {
+      const payload = state.customEvents.map(e => ({
+        id: e.id,
+        title: e.title,
+        color: e.color,
+        start: e.start.setZone('UTC').toISO(),
+        end: e.end.setZone('UTC').toISO(),
+        tasks: (e.tasks || []).map(t => ({ id: t.id, title: t.title, done: !!t.done }))
+      }));
+      localStorage.setItem(key, JSON.stringify(payload));
+    } catch {}
   }
 
   function saveStatus() {
@@ -84,6 +132,25 @@
     }
     els.tzSelect.innerHTML = list.map(z => `<option value="${z.id}">${z.label}</option>`).join('');
     els.tzSelect.value = state.zone;
+  }
+
+  function clampDayIndex(i) {
+    return Math.max(0, Math.min(6, i | 0));
+  }
+
+  function populateDaySelect() {
+    if (!els.evDay) return;
+    const baseLocal = state.weekStart.setZone(state.zone).startOf('day');
+    const days = Array.from({ length: 7 }, (_, i) => baseLocal.plus({ days: i }));
+    const todayIdx = clampDayIndex((DateTime.now().setZone(state.zone).startOf('day').diff(baseLocal, 'days').days) | 0);
+    state.selectedDayIndex = todayIdx;
+    const rotated = [...days.slice(todayIdx), ...days.slice(0, todayIdx)];
+    els.evDay.innerHTML = rotated.map(d => {
+      const idx = Math.round(d.diff(baseLocal, 'days').days);
+      const label = `${d.toFormat('ccc')}`;
+      return `<option value="${idx}">${label}</option>`;
+    }).join('');
+    els.evDay.value = String(state.selectedDayIndex);
   }
 
   function getWeekStart(zone, anchor) {
@@ -442,13 +509,21 @@
     }));
   }
 
+  function mergeAllEvents() {
+    const curated = generateEvents(state.weekStart, state.zone);
+    state.events = [...curated, ...state.customEvents];
+  }
+
   function checkWeekRollover() {
     const currentWeekStart = getWeekStart('UTC').plus({ hours: 2 });
     if (currentWeekStart.toISODate() !== state.weekStart.toISODate()) {
       state.weekStart = currentWeekStart;
+      state.selectedDayIndex = clampDayIndex((DateTime.now().setZone(state.zone).startOf('day').diff(state.weekStart, 'days').days) | 0);
       loadStatus();
-      state.events = generateEvents(state.weekStart, state.zone);
+      loadCustomEvents();
+      mergeAllEvents();
       updateAll();
+      populateDaySelect();
     }
   }
 
@@ -468,6 +543,7 @@
     renderEvents();
     renderNowIndicator();
     renderTaskBoards();
+    renderCustomEventsList();
   }
 
   function setScale(newScale, preserveCenter = true) {
@@ -501,10 +577,12 @@
       state.originalHourWidthPx = 72;
     }
     state.weekStart = getWeekStart('UTC').plus({ hours: 2 }); // Monday 02:00 UTC
-    state.selectedDayIndex = (DateTime.now().setZone(state.zone).startOf('day').diff(state.weekStart, 'days').days) | 0;
+    state.selectedDayIndex = clampDayIndex((DateTime.now().setZone(state.zone).startOf('day').diff(state.weekStart, 'days').days) | 0);
     loadStatus();
-    state.events = generateEvents(state.weekStart, state.zone);
+    loadCustomEvents();
+    mergeAllEvents();
     updateAll();
+    populateDaySelect();
     setTimeout(centerOnNow, 50);
     setTimeout(() => {
       const loader = document.getElementById('loader');
@@ -512,12 +590,6 @@
       document.body.classList.remove('is-loading');
     }, 100);
     renderCurrentInfo();
-
-    // footer
-    const lastUpdatedEl = document.getElementById('last-updated');
-    if (lastUpdatedEl) {
-      lastUpdatedEl.textContent = DateTime.local().toLocaleString(DateTime.DATE_MED);
-    }
 
     if (els.zoomIn) {
       els.zoomIn.addEventListener('click', () => setScale(state.scale + 0.25));
@@ -536,9 +608,12 @@
     els.tzSelect.addEventListener('change', () => {
       state.zone = els.tzSelect.value;
       state.weekStart = getWeekStart('UTC').plus({ hours: 2 });
+      state.selectedDayIndex = clampDayIndex((DateTime.now().setZone(state.zone).startOf('day').diff(state.weekStart, 'days').days) | 0);
       loadStatus();
-      state.events = generateEvents(state.weekStart, state.zone);
+      loadCustomEvents();
+      mergeAllEvents();
       updateAll();
+      populateDaySelect();
       renderCurrentInfo();
       centerOnNow();
       if (state.followNow) scrollToNow();
@@ -551,12 +626,73 @@
         populateTimezones();
         els.tzSelect.value = localZone;
         state.weekStart = getWeekStart('UTC').plus({ hours: 2 });
+        state.selectedDayIndex = clampDayIndex((DateTime.now().setZone(state.zone).startOf('day').diff(state.weekStart, 'days').days) | 0);
         loadStatus();
-        state.events = generateEvents(state.weekStart, state.zone);
+        loadCustomEvents();
+        mergeAllEvents();
         updateAll();
+        populateDaySelect();
         centerOnNow();
         if (state.followNow) scrollToNow();
         renderCurrentInfo();
+      });
+    }
+
+    // custom event handler
+    if (els.addEventForm) {
+      els.addEventForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const title = (els.evTitle.value || '').trim();
+        const color = els.evColor && els.evColor.value ? els.evColor.value : undefined;
+        const dayIdx = clampDayIndex(parseInt(els.evDay.value || '0', 10) || 0);
+        const startStr = els.evStart.value;
+        const endStr = els.evEnd.value;
+        if (!title || !startStr || !endStr) return;
+
+        const [sh, sm] = startStr.split(':').map(x => parseInt(x, 10) || 0);
+        const [eh, em] = endStr.split(':').map(x => parseInt(x, 10) || 0);
+
+        // set to user's zone
+        const mondayLocal = state.weekStart.setZone(state.zone).startOf('day');
+        let startLocal = mondayLocal.plus({ days: dayIdx }).set({ hour: sh, minute: sm, second: 0, millisecond: 0 });
+        let endLocal = mondayLocal.plus({ days: dayIdx }).set({ hour: eh, minute: em, second: 0, millisecond: 0 });
+        // if end <= start, assume invalid
+        if (endLocal <= startLocal) {
+          alert('End time must be after start time.');
+          return;
+        }
+
+        const id = `u-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
+        const tasks = (els.evTasks.value || '')
+          .split(',')
+          .map(s => s.trim())
+          .filter(Boolean)
+          .map((t, i) => ({ id: `u-${i + 1}`, title: t, done: false }));
+
+        const newEvt = {
+          id,
+          title,
+          color,
+          start: startLocal,
+          end: endLocal,
+          tasks
+        };
+        state.customEvents.push(newEvt);
+        saveCustomEvents();
+        mergeAllEvents();
+        updateAll();
+        els.addEventForm.reset();
+        if (els.evColor) els.evColor.value = '#3b82f6';
+      });
+    }
+
+    if (els.clearCustomBtn) {
+      els.clearCustomBtn.addEventListener('click', () => {
+        if (!confirm('Clear all custom events for this week?')) return;
+        state.customEvents = [];
+        saveCustomEvents();
+        mergeAllEvents();
+        updateAll();
       });
     }
 
@@ -570,4 +706,46 @@
   }
 
   document.addEventListener('DOMContentLoaded', init);
+
+  function renderCustomEventsList() {
+    if (!els.customEventsList) return;
+    els.customEventsList.innerHTML = '';
+    if (!state.customEvents.length) {
+      const none = document.createElement('div');
+      none.className = 'custom-empty';
+      none.textContent = 'No custom events added for this week.';
+      els.customEventsList.appendChild(none);
+      return;
+    }
+
+    state.customEvents
+      .slice()
+      .sort((a, b) => a.start.toMillis() - b.start.toMillis())
+      .forEach(evt => {
+        const row = document.createElement('div');
+        row.className = 'custom-row';
+        const badge = document.createElement('span');
+        badge.className = 'color-dot';
+        badge.style.background = getEventColor(evt);
+        const title = document.createElement('span');
+        title.className = 'custom-title';
+        title.textContent = `${evt.title} • ${evt.start.toFormat('ccc h:mm a')} – ${evt.end.toFormat('h:mm a')}`;
+        const del = document.createElement('button');
+        del.textContent = 'Delete';
+        del.className = 'danger';
+        del.addEventListener('click', () => {
+          const idx = state.customEvents.findIndex(e => e.id === evt.id);
+          if (idx >= 0) {
+            state.customEvents.splice(idx, 1);
+            saveCustomEvents();
+            mergeAllEvents();
+            updateAll();
+          }
+        });
+        row.appendChild(badge);
+        row.appendChild(title);
+        row.appendChild(del);
+        els.customEventsList.appendChild(row);
+      });
+  }
 })();
