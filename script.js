@@ -292,6 +292,7 @@
     const hoursTotal = 24 * 7;
     const minutesTotal = hoursTotal * 60;
     const baseStart = state.weekStart;
+    const now = DateTime.now().setZone(state.zone);
     const segments = [];
 
     function pushSegment(evt, segStart, segEnd, colorIdx) {
@@ -365,13 +366,14 @@
 
       const tasksWrap = document.createElement('div');
       tasksWrap.className = 'tasks';
-      (seg.evt.tasks || []).forEach(task => {
+      const visibleTasks = getVisibleTasks(seg.evt, now);
+      visibleTasks.forEach(task => {
         tasksWrap.appendChild(createTaskChip(seg.evt, task));
       });
 
       evEl.appendChild(title);
       evEl.appendChild(time);
-      if (seg.evt.tasks && seg.evt.tasks.length) evEl.appendChild(tasksWrap);
+      if (visibleTasks.length) evEl.appendChild(tasksWrap);
       track.appendChild(evEl);
       const h = evEl.offsetHeight;
       laneHeights[seg.laneIdx] = Math.max(laneHeights[seg.laneIdx], h);
@@ -422,6 +424,16 @@
     chip.appendChild(cb);
     chip.appendChild(txt);
     return chip;
+  }
+
+  function getVisibleTasks(evt, now) {
+    const tasks = evt.tasks || [];
+    return tasks.filter(t => {
+      const delayMin = Number(t.unlockMin || 0);
+      if (!isFinite(delayMin) || delayMin <= 0) return true;
+      const unlockAt = evt.start.plus({ minutes: delayMin });
+      return now >= unlockAt;
+    });
   }
 
   function renderTaskBoards() {
@@ -488,8 +500,9 @@
       block.appendChild(time);
       const wrap = document.createElement('div');
       wrap.className = 'tasks';
-      (e.tasks || []).forEach(t => wrap.appendChild(createTaskChip(e, t)));
-      if (e.tasks && e.tasks.length) block.appendChild(wrap);
+      const visibleTasks = getVisibleTasks(e, now);
+      visibleTasks.forEach(t => wrap.appendChild(createTaskChip(e, t)));
+      if (visibleTasks.length) block.appendChild(wrap);
       return block;
     }
   }
@@ -702,6 +715,7 @@
     }, 60 * 1000);
     setInterval(renderCurrentInfo, 1000);
     setInterval(renderTaskBoards, 60 * 1000);
+    setInterval(renderEvents, 60 * 1000);
     setInterval(checkWeekRollover, 5 * 60 * 1000);
   }
 
