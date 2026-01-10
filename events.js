@@ -46,6 +46,8 @@
         { id: 'gather-gold', title: 'Gather Gold', done: false },
         { id: 'gather-iron', title: 'Gather Iron', done: false },
         { id: 'gather-food', title: 'Gather Food', done: false },
+        { id: 'fin-double-dip-drone-data', title: 'Drone Data (No more double dipping)', done: false, unlockMin: 1200 },
+        { id: 'fin-double-dip-stamina', title: 'Stamina (No more double dipping)', done: false, unlockMin: 1200 },
       ] },
       { id: 'ar-base-sun-2', title: 'Arms Race: Base Building', color: COLORS.orange, start: mon.plus({ hours: 2 }), end: mon.plus({ hours: 6 }), tasks: [
         { id: 'inc-build-power', title: 'Increase Building Power', done: false },
@@ -159,6 +161,10 @@
       ] },
       { id: 'vs-total-mobilization', title: 'Alliance Versus: Total Mobilization', color: COLORS.purple, start: fri.plus({ hours: 2 }), end: sat.plus({ hours: 2 }), tasks: [
         { id: 'radar-tasks', title: 'Do Radar Tasks', done: false },
+        { id: 'fin-double-dip-inc-tech', title: 'Increase Tech Power (No more double dipping)', done: false, unlockMin: 240 },
+        { id: 'fin-double-dip-research', title: 'Use Research/Generic Speed-ups (No more double dipping)', done: false, unlockMin: 240 },
+        { id: 'fin-double-dip-inc-build', title: 'Increase Building Power (No more double dipping)', done: false, unlockMin: 1200 },
+        { id: 'fin-double-dip-construction', title: 'Use Construction/Generic Speed-ups (No more double dipping)', done: false, unlockMin: 1200 },
       ] },
       { id: 'ar-tech-thu-2', title: 'Arms Race: Tech Research', color: COLORS.purple, start: fri.plus({ hours: 2 }), end: fri.plus({ hours: 6 }), tasks: [
         { id: 'double-dip-inc-tech', title: 'DOUBLE DIP - Increase Tech Power', done: false },
@@ -188,6 +194,9 @@
         { id: 'healing-speedups', title: 'Use Healing/Generic Speed-ups', done: false },
         { id: 'ur-tasks', title: 'Do UR Tasks', done: false },
         { id: 'deploy-ur-trucks', title: 'Deploy UR Trucks', done: false },
+        { id: 'fin-double-dip-training-generic', title: 'Use Training/Generic Speed-ups (No more double dipping)', done: false, unlockMin: 240 },
+        { id: 'fin-double-dip-research', title: 'Use Research/Generic Speed-ups (No more double dipping)', done: false, unlockMin: 480 },
+        { id: 'fin-double-dip-stamina-kill', title: 'Stamina (Kill Units) (No more double dipping)', done: false, unlockMin: 960 },
       ] },
       { id: 'ar-unit-fri-3', title: 'Arms Race: Unit Progression', color: COLORS.white, start: sat.plus({ hours: 2 }), end: sat.plus({ hours: 6 }), tasks: [
         { id: 'train-units', title: 'Train Units', done: false },
