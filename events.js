@@ -41,7 +41,6 @@
       ] },
       { id: 'vs-radar', title: 'Alliance Versus: Radar Training', color: COLORS.lightBlue, start: mon.plus({ hours: 2 }), end: tue.plus({ hours: 2 }), tasks: [
         { id: 'radar-tasks', title: 'Do Radar Tasks', done: false },
-        { id: 'use-drone-parts', title: 'Use Drone Parts', done: false },
         { id: 'gather-gold', title: 'Gather Gold', done: false },
         { id: 'gather-iron', title: 'Gather Iron', done: false },
         { id: 'gather-food', title: 'Gather Food', done: false },
@@ -234,3 +233,4 @@
 
   window.getEventsUTC = getEventsUTC;
 })();
+
