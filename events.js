@@ -41,13 +41,12 @@
       ] },
       { id: 'vs-radar', title: 'Alliance Versus: Radar Training', color: COLORS.lightBlue, start: mon.plus({ hours: 2 }), end: tue.plus({ hours: 2 }), tasks: [
         { id: 'radar-tasks', title: 'Do Radar Tasks', done: false },
-        { id: 'use-hero-exp', title: 'Use Hero EXP', done: false },
         { id: 'use-drone-parts', title: 'Use Drone Parts', done: false },
         { id: 'gather-gold', title: 'Gather Gold', done: false },
         { id: 'gather-iron', title: 'Gather Iron', done: false },
         { id: 'gather-food', title: 'Gather Food', done: false },
-        { id: 'fin-double-dip-drone-data', title: 'Drone Data (No more double dipping)', done: false, unlockMin: 1200 },
-        { id: 'fin-double-dip-stamina', title: 'Stamina (No more double dipping)', done: false, unlockMin: 1200 },
+        { id: 'fin-double-dip-drone', title: 'Use Drone Data & Parts (No more double dipping)', done: false, unlockMin: 1200 },
+        { id: 'fin-double-dip-stamina', title: 'Use Stamina (No more double dipping)', done: false, unlockMin: 1200 },
       ] },
       { id: 'ar-base-sun-2', title: 'Arms Race: Base Building', color: COLORS.orange, start: mon.plus({ hours: 2 }), end: mon.plus({ hours: 6 }), tasks: [
         { id: 'inc-build-power', title: 'Increase Building Power', done: false },
@@ -59,19 +58,19 @@
       ] },
       { id: 'ar-hero-mon-1', title: 'Arms Race: Hero Advancement', color: COLORS.red, start: mon.plus({ hours: 10 }), end: mon.plus({ hours: 14 }), tasks: [
         { id: 'hero-tickets', title: 'Use Hero Recruitment Tickets', done: false },
-        { id: 'use-hero-exp', title: 'Use Hero EXP', done: false },
+        { id: 'use-hero-exp', title: 'DOUBLE DIP - Use Hero EXP', done: false },
       ] },
       { id: 'ar-tech-mon-1', title: 'Arms Race: Tech Research', color: COLORS.darkBlue, start: mon.plus({ hours: 14 }), end: mon.plus({ hours: 18 }), tasks: [
         { id: 'inc-tech-power', title: 'Increase Tech Power', done: false },
         { id: 'research-speedups', title: 'Use Research/Generic Speed-ups', done: false },
       ] },
       { id: 'ar-drone-mon', title: 'Arms Race: Drone Boost', color: COLORS.lightBlue, start: mon.plus({ hours: 18 }), end: mon.plus({ hours: 22 }), tasks: [
-        { id: 'double-dip-drone-data', title: 'DOUBLE DIP - Drone Data', done: false },
+        { id: 'double-dip-drone', title: 'DOUBLE DIP - Use Drone Data & Parts', done: false },
         { id: 'double-dip-stamina', title: 'DOUBLE DIP - Stamina', done: false },
       ] },
       { id: 'ar-hero-mon-2', title: 'Arms Race: Hero Advancement', color: COLORS.red, start: mon.plus({ hours: 22 }), end: tue.plus({ hours: 2 }), tasks: [
         { id: 'hero-tickets', title: 'Use Hero Recruitment Tickets', done: false },
-        { id: 'use-hero-exp', title: 'Use Hero EXP', done: false },
+        { id: 'use-hero-exp', title: 'DOUBLE DIP - Use Hero EXP', done: false },
       ] },
       { id: 'vs-base-expansion', title: 'Alliance Versus: Base Expansion', color: COLORS.orange, start: tue.plus({ hours: 2 }), end: wed.plus({ hours: 2 }), tasks: [
         { id: 'ur-tasks', title: 'Do UR Tasks', done: false },
